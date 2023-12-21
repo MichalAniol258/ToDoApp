@@ -1,7 +1,8 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
+    background-color: #f4f4f4;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,93 +10,59 @@ body {
     height: 100vh;
 }
 
-main {
-    text-align: center;
-}
-
 h1 {
     color: #333;
 }
 
-#cos {
-    margin-bottom: 20px;
-}
-
-#zadajZadanie {
-    padding: 10px;
-    margin-right: 10px;
+#inputTask {
+    padding: 8px;
+    margin-right: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 4px;
 }
 
-#przycisk {
-    padding: 10px;
+button {
+    padding: 8px;
     background-color: #4caf50;
-    color: #fff;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
 }
 
-#przycisk:hover {
+button:hover {
     background-color: #45a049;
 }
 
 ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 }
 
-.spanZad {
-    display: flex;
-    margin: 20px;
-    padding: 10px;
-    margin-right: 10px;
+li {
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-button {
+li span {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+.delete {
+    background-color: #f44336;
     margin: 5px;
 }
 
-.spanZad:hover {
-    background-color: #f9f9f9;
-}
-
-.checkbox {
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-.edytor,
-.usuwacz {
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.edytor {
-    background-color: #3498db;
-    color: #fff;
-}
-
-.edytor:hover {
-    background-color: #2980b9;
-}
-
-.usuwacz {
-    background-color: #e74c3c;
-    color: #fff;
-}
-
-.usuwacz:hover {
-    background-color: #c0392b;
+.delete:hover {
+    background-color: #d32f2f;
 }

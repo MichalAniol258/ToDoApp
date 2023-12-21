@@ -1,59 +1,65 @@
-function dodajTresc() {
-    let listaZadan = document.querySelector("#listaZadan");
-    let zadajZadanie = document.querySelector("#zadajZadanie").value;
-    let przycisk = document.querySelector("#przycisk")
+let inputTask = document.querySelector("#inputTask");
+let listaZadan = document.querySelector("#listaZadan");
 
-    let spanZad = document.createElement('span')
-    spanZad.classList.add("spanZad")
-    spanZad.innerHTML = zadajZadanie;
+function zapiszZadaniaDoLocalStorage() {
+    let tasks = [];
+    listaZadan.childNodes.forEach((task) => {
+        let taskText = task.querySelector('span').innerText;
+        let isCompleted = task.querySelector('span').classList.contains('completed');
+        tasks.push({ text: taskText, completed: isCompleted });
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
 
-    if (spanZad.innerHTML === '') {
-        alert("Podaj zadanie");
-        return;
+// Funkcja do wczytywania listy zadań z localStorage
+function wczytajZadaniaZLocalStorage() {
+    let tasks = localStorage.getItem('tasks');
+    if (tasks) {
+        tasks = JSON.parse(tasks);
+        tasks.forEach((task) => {
+            let li = document.createElement('li');
+            li.innerHTML = `
+                <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
+                <button onclick="oznaczJakoWykonane(this)">Wykonane</button>
+                <button class="delete" onclick="usunZadanie(this)">Usuń</button>
+            `;
+            listaZadan.appendChild(li);
+        });
     }
+}
 
-    let checkbox = document.createElement('input');
-    checkbox.classList.add("checkbox");
-    checkbox.type = "checkbox";
+// Wywołaj funkcję wczytującą zadania po załadowaniu strony
+window.onload = wczytajZadaniaZLocalStorage;
 
-    let edytor = document.createElement('button');
-    edytor.classList.add("edytor");
-    edytor.type = "edytor";
-    edytor.textContent = "Edytuj";
+function dodajZadanie() {
+    let inputText = inputTask.value.trim();
 
-    edytor.addEventListener("click", (e) => {
-        spanZad.contentEditable = true;
-        spanZad.focus();
+    if (inputText !== '') {
+        let li = document.createElement('li');
+        li.innerHTML = `
+                    <span>${inputText}</span>
+                    <button onclick="oznaczJakoWykonane(this)">Wykonane</button>
+                    <button class="delete" onclick="usunZadanie(this)">Usuń</button>
+                `;
+        listaZadan.appendChild(li);
 
-        spanZad.addEventListener("focusout", (e) => {
-            spanZad.contentEditable = false;
-        })
-    })
+        // Zapisz zadania do localStorage po dodaniu nowego zadania
+        zapiszZadaniaDoLocalStorage();
+    }
+}
 
-    let usuwacz = document.createElement('button');
-    usuwacz.classList.add("usuwacz");
-    usuwacz.type = "button";
-    usuwacz.textContent = "Usuń";
+function oznaczJakoWykonane(button) {
+    let taskSpan = button.parentElement.querySelector('span');
+    taskSpan.classList.toggle('completed');
 
-    usuwacz.addEventListener("click", (e) => {
-        spanZad.remove();
-        checkbox.remove();
-        usuwacz.remove();
-        edytor.remove();
-    })
+    // Zapisz zadania do localStorage po oznaczeniu jako wykonane
+    zapiszZadaniaDoLocalStorage();
+}
 
-    checkbox.addEventListener("change", (e) => {
-        if (checkbox.checked) {
-            spanZad.style.background = "green";
-            spanZad.style.color = "white"
-        } else {
-            spanZad.style.background = '';
-            spanZad.style.color = ""
-        }
-    })
+function usunZadanie(button) {
+    let taskLi = button.parentElement;
+    taskLi.remove();
 
-    listaZadan.appendChild(spanZad);
-    listaZadan.appendChild(usuwacz);
-    listaZadan.appendChild(edytor);
-    listaZadan.appendChild(checkbox);
+    // Zapisz zadania do localStorage po usunięciu zadania
+    zapiszZadaniaDoLocalStorage();
 }
